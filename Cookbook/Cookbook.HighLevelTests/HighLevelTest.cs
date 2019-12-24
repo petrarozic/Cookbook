@@ -6,14 +6,15 @@ using Xunit;
 
 namespace Cookbook.HighLevelTests
 {
-    public class Class1 : IDisposable
+    public class HighLevelTest : IDisposable
     {
         private readonly IWebDriver _driver;
 
-        public Class1()
+        public HighLevelTest()
         {
             _driver = new ChromeDriver(Environment.CurrentDirectory);
         }
+
         public void Dispose()
         {
             _driver.Quit();
@@ -24,9 +25,10 @@ namespace Cookbook.HighLevelTests
         public void getContent()
         {
             _driver.Navigate().GoToUrl("http://localhost:58883/");
-            DelayForDemoVideo(1000);
+            DelayForDemoVideo();
             
-            Assert.Contains("Hello World!", _driver.PageSource.ToString());
+            Assert.Contains("Cookbook", _driver.PageSource.ToString());
+            Assert.Equal("Cookbook", _driver.Title);
         }
 
         private void DelayForDemoVideo(int delay = 500)

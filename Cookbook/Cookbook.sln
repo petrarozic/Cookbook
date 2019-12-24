@@ -7,9 +7,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook", "Cookbook\Cookbo
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{135247BE-DC66-4C90-A390-D2A8D2B50465}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.LowerLevelTests", "Cookbook.LowerLevelTests\Cookbook.LowerLevelTests.csproj", "{83C1940D-679D-462D-B876-A935DAF5C4B1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.LowerLevelTests", "Cookbook.LowerLevelTests\Cookbook.LowerLevelTests.csproj", "{83C1940D-679D-462D-B876-A935DAF5C4B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cookbook.HighLevelTests", "Cookbook.HighLevelTests\Cookbook.HighLevelTests.csproj", "{204ACE56-2FDB-4EDB-ACCC-F982108461EC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cookbook.HighLevelTests", "Cookbook.HighLevelTests\Cookbook.HighLevelTests.csproj", "{204ACE56-2FDB-4EDB-ACCC-F982108461EC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
