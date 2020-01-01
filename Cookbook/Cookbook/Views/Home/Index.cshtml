@@ -4,5 +4,15 @@
 </head>
 <body>
     Cookbook
+    <div id="Recipes">
+        @{
+            foreach (var recipe in ViewBag.Recipes)
+            {
+                <div class="recipe">
+                    Name: @recipe.Name
+                </div>
+            }
+        }
+    </div>
 </body>
 </html>
