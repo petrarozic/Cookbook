@@ -20,5 +20,12 @@ namespace Cookbook.Repositories
         {
             return _appDbContext.Recipes;
         }
+
+        public Recipe GetRecipeById(int recipeId)
+        {
+            return _appDbContext.Recipes
+                                .Where(r => r.RecipeId == recipeId)
+                                .FirstOrDefault();
+        }
     }
 }

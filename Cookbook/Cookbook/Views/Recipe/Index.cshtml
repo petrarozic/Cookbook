@@ -1,0 +1,16 @@
+﻿<html>
+<head>
+    <title>Cookbook</title>
+</head>
+<body>
+    @if (ViewBag.Recipe != null)
+    {
+        <h1>@ViewBag.Recipe.Name</h1>
+        <h3>Ingredients</h3>
+        <div>@ViewBag.Recipe.Ingredients</div>
+        <h3>Steps</h3>
+        <div>@ViewBag.Recipe.Steps</div>
+    }
+    <h3>@ViewBag.NoRecipe</h3>
+</body>
+</html>

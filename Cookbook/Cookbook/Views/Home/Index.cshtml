@@ -1,6 +1,7 @@
 ﻿<html>
 <head>
     <title>Cookbook</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 </head>
 <body>
     Cookbook
@@ -8,7 +9,7 @@
         @{
             foreach (var recipe in ViewBag.Recipes)
             {
-                <div class="recipe">
+                <div class="recipe" id=@recipe.RecipeId>
                     Name: @recipe.Name
                 </div>
             }
@@ -16,3 +17,14 @@
     </div>
 </body>
 </html>
+<script>
+    $(document).ready(function () {
+        $(".recipe").on("click", function (e) {
+            displayRecipe(e.target.id);
+        });
+    });
+
+    function displayRecipe(recipeId) {
+        window.location.href = "/Recipe/" + recipeId;
+    }
+</script>
