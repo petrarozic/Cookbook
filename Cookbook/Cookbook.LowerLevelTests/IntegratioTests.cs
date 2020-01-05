@@ -1,4 +1,5 @@
-﻿using Cookbook.Models;
+﻿using Cookbook.DTO;
+using Cookbook.Models;
 using Cookbook.Repositories;
 using System;
 using System.Collections.Generic;
@@ -20,6 +21,10 @@ namespace Cookbook.LowerLevelTests
 
             Assert.Equal(10, records.Count);
             Assert.True(ListOfRecipeContains("Burek", records));
+            records[0].RecipeId= 1;
+            records[0].Name = "Burek";
+            records[0].RecipeIngredients = null;
+            records[0].Steps = null;
         }
 
         private bool ListOfRecipeContains(string name, List<Recipe> records)
@@ -37,16 +42,23 @@ namespace Cookbook.LowerLevelTests
 
             int recipeId = 1;
             string recipeName = "Burek";
-            string recipeIngredients = "1kg Meso";
-            string recipeSteps = "Razvaljas tijesto. Razbacas meso. Zarolas i stavis pec.";
+            List<IngredientDTO> ingredients= new List<IngredientDTO> {
+                new IngredientDTO{Amount = 1, MeasuringUnit = "kg", Name = "Meso" }
+            };
+            List<StepDTO> steps = new List<StepDTO> {
+                new StepDTO { Order = 1, Description = "Razvaljas tijesto" },
+                new StepDTO { Order = 2, Description = "Razbacas meso" },
+                new StepDTO { Order = 3, Description = "Zarolas i stavis pec" }
+            };
 
-            Assert.IsType<Recipe>(repo.GetRecipeById(1));
+            Assert.IsType<RecipeDetailDTO>(repo.GetRecipeById(1));
 
-            Recipe recipe = repo.GetRecipeById(1);
-            Assert.Equal(recipe.RecipeId, recipeId);
-            Assert.Equal(recipe.Name, recipeName);
-            Assert.Equal(recipe.Ingredients, recipeIngredients);
-            Assert.Equal(recipe.Steps, recipeSteps);
+            RecipeDetailDTO recipe = repo.GetRecipeById(1);
+            Assert.Equal(recipeId, recipe.RecipeId);
+            Assert.Equal(recipeName, recipe.Name);
+
+            Microsoft.VisualStudio.TestTools.UnitTesting.CollectionAssert.Equals(ingredients, recipe.Ingredients);
+            Microsoft.VisualStudio.TestTools.UnitTesting.CollectionAssert.Equals(steps, recipe.Steps);
         }
 
         [Theory]

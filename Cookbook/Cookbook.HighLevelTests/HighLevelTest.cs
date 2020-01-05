@@ -55,7 +55,7 @@ namespace Cookbook.HighLevelTests
             Assert.Contains(pageTitle, recipeName);
 
             Assert.Contains("Ingredients", _driver.PageSource);
-            Assert.Contains("1kg Meso", _driver.PageSource);
+            Assert.Matches("1 kg.*Meso", _driver.PageSource);
             Assert.Contains("Steps", _driver.PageSource);
             Assert.Contains("Razvaljas tijesto", _driver.PageSource);
 

@@ -1,4 +1,5 @@
-﻿using Cookbook.Models;
+﻿using Cookbook.DTO;
+using Cookbook.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +10,6 @@ namespace Cookbook.Interfaces
     public interface IRecipeRepository
     {
         IEnumerable<Recipe> GetAllRecipe();
-        Recipe GetRecipeById(int recipeId);
+        RecipeDetailDTO GetRecipeById(int recipeId);
     }
 }

@@ -30,11 +30,11 @@ namespace Cookbook.LowerLevelTests
         {
             return new List<Recipe>
             {
-                new Recipe { RecipeId = 1, Name = "Ledeni vjetar" },
-                new Recipe { RecipeId = 2, Name = "Madarica" },
-                new Recipe { RecipeId = 3, Name = "Orahnjaca" },
-                new Recipe { RecipeId = 4, Name = "Breskvice" },
-                new Recipe { RecipeId = 5, Name = "Cupavac" }
+                new Recipe { RecipeId = 1, Name = "Ledeni vjetar", RecipeIngredients = null, Steps = null },
+                new Recipe { RecipeId = 2, Name = "Madarica", RecipeIngredients = null, Steps = null },
+                new Recipe { RecipeId = 3, Name = "Orahnjaca", RecipeIngredients = null, Steps = null },
+                new Recipe { RecipeId = 4, Name = "Breskvice", RecipeIngredients = null, Steps = null },
+                new Recipe { RecipeId = 5, Name = "Cupavac", RecipeIngredients = null, Steps = null }
             };
         }
 

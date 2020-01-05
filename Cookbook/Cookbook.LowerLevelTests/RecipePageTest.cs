@@ -1,4 +1,5 @@
 ﻿using Cookbook.Controllers;
+using Cookbook.DTO;
 using Cookbook.Interfaces;
 using Cookbook.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -16,28 +17,41 @@ namespace Cookbook.LowerLevelTests
         public void ReturnRecipeDetails()
         {
             Mock<IRecipeRepository> recipeRepository = new Mock<IRecipeRepository>();
-            string recipeName = "Burek";
+
             int recipeId = 1;
-            string ingredients = "1kg Meso";
-            string steps = "Razvaljas tijesto. Razbacas meso. Zarolas i stavis pec.";
+            string recipeName = "Burek";
+            List<IngredientDTO> ingredients = new List<IngredientDTO> {
+                new IngredientDTO{Amount = 1, MeasuringUnit = "kg", Name = "Meso" }
+            };
+            List<StepDTO> steps = new List<StepDTO> {
+                new StepDTO { Order = 1, Description = "Razvaljas tijesto" },
+                new StepDTO { Order = 2, Description = "Razbacas meso" },
+                new StepDTO { Order = 3, Description = "Zarolas i stavis pec" }
+            };
 
             recipeRepository.Setup(x => x.GetRecipeById(recipeId))
-                            .Returns(new Recipe { Name = recipeName, RecipeId = recipeId,
-                                                  Ingredients = ingredients, Steps = steps});
+                            .Returns(new RecipeDetailDTO
+                            {
+                                RecipeId = recipeId,
+                                Name = recipeName,
+                                Ingredients = ingredients,
+                                Steps = steps
+                            });
+
             RecipeController recipeController = new RecipeController(recipeRepository.Object);
             var result = recipeController.Index(recipeId);
             var viewResult = Assert.IsType<ViewResult>(result);
 
-            Assert.IsType<Recipe>(recipeController.ViewBag.Recipe);
+            Assert.IsType<RecipeDetailDTO>(recipeController.ViewBag.Recipe);
             Assert.IsType<string>(recipeController.ViewBag.Recipe.Name);
             Assert.IsType<int>(recipeController.ViewBag.Recipe.RecipeId);
-            Assert.IsType<string>(recipeController.ViewBag.Recipe.Ingredients);
-            Assert.IsType<string>(recipeController.ViewBag.Recipe.Steps);
+            Assert.IsType<List<IngredientDTO>>(recipeController.ViewBag.Recipe.Ingredients);
+            Assert.IsType<List<StepDTO>>(recipeController.ViewBag.Recipe.Steps);
 
-            Assert.Equal(recipeController.ViewBag.Recipe.Name, recipeName);
-            Assert.Equal(recipeController.ViewBag.Recipe.RecipeId, recipeId);
-            Assert.Equal(recipeController.ViewBag.Recipe.Ingredients, ingredients);
-            Assert.Equal(recipeController.ViewBag.Recipe.Steps, steps);
+            Assert.Equal(recipeName, recipeController.ViewBag.Recipe.Name);
+            Assert.Equal(recipeId, recipeController.ViewBag.Recipe.RecipeId);
+            Microsoft.VisualStudio.TestTools.UnitTesting.CollectionAssert.Equals(ingredients, recipeController.ViewBag.Recipe.Ingredients);
+            Microsoft.VisualStudio.TestTools.UnitTesting.CollectionAssert.Equals(steps, recipeController.ViewBag.Recipe.Steps);
 
             Assert.Null(recipeController.ViewBag.NoRecipe);
         }
@@ -49,10 +63,27 @@ namespace Cookbook.LowerLevelTests
         public void ReturnErrorMessage(int requestedId)
         {
             Mock<IRecipeRepository> recipeRepository = new Mock<IRecipeRepository>();
-            string recipeName = "Burek";
+
             int recipeId = 1;
+            string recipeName = "Burek";
+            List<IngredientDTO> ingredients = new List<IngredientDTO> {
+                new IngredientDTO{Amount = 1, MeasuringUnit = "kg", Name = "Meso" }
+            };
+            List<StepDTO> steps = new List<StepDTO> {
+                new StepDTO { Order = 1, Description = "Razvaljas tijesto" },
+                new StepDTO { Order = 2, Description = "Razbacas meso" },
+                new StepDTO { Order = 3, Description = "Zarolas i stavis pec" }
+            };
+
             recipeRepository.Setup(x => x.GetRecipeById(recipeId))
-                            .Returns(new Recipe { Name = recipeName, RecipeId = recipeId });
+                            .Returns(new RecipeDetailDTO
+                            {
+                                RecipeId = recipeId,
+                                Name = recipeName,
+                                Ingredients = ingredients,
+                                Steps = steps
+                            });
+
             RecipeController recipeController = new RecipeController(recipeRepository.Object);
 
             var result = recipeController.Index(requestedId);
