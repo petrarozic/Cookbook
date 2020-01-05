@@ -22,13 +22,20 @@ namespace Cookbook.HighLevelTests
         }
 
         [Fact]
-        public void getContent()
+        public void HomePageShouldDisplayTitle()
         {
             _driver.Navigate().GoToUrl("http://localhost:58883/");
             DelayForDemoVideo();
-            
-            Assert.Contains("Cookbook", _driver.PageSource.ToString());
+
+            Assert.Contains("Cookbook", _driver.PageSource);
             Assert.Equal("Cookbook", _driver.Title);
+        }
+
+        [Fact]
+        public void HomaPageShouldDisplayRecipes()
+        {
+            _driver.Navigate().GoToUrl("http://localhost:58883/");
+            DelayForDemoVideo();
 
             var recipes = _driver.FindElement(By.Id("Recipes")).FindElements(By.ClassName("recipe"));
 
@@ -36,8 +43,14 @@ namespace Cookbook.HighLevelTests
             Assert.NotNull(recipe);
 
             Assert.True(recipes.Count > 0, "No recipe is displayed on page");
+        }
 
+        [Fact]
+        public void ClickOnRecipeSholudDisplayRecipeDetails()
+        {
+            _driver.Navigate().GoToUrl("http://localhost:58883/");
 
+            var recipes = _driver.FindElement(By.Id("Recipes")).FindElements(By.ClassName("recipe"));
             string recipeName = null;
             foreach (var r in recipes)
             {
@@ -60,16 +73,18 @@ namespace Cookbook.HighLevelTests
             Assert.Contains("Razvaljas tijesto", _driver.PageSource);
 
             Assert.DoesNotContain("The requested recipe cannot be displayed", _driver.PageSource);
+        }
 
+        [Fact]
+        public void RequestToDisplayNonExistingRecipe()
+        {
             _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/-1");
             DelayForDemoVideo();
+
             Assert.Equal("Cookbook", _driver.Title);
             Assert.DoesNotContain("Ingredients", _driver.PageSource);
             Assert.DoesNotContain("Steps", _driver.PageSource);
             Assert.Contains("The requested recipe cannot be displayed", _driver.PageSource);
-
-            _driver.Navigate().GoToUrl("http://localhost:58883/");
-            DelayForDemoVideo();
         }
 
         private void DelayForDemoVideo(int delay = 500)
