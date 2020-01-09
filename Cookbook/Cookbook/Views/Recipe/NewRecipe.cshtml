@@ -1,0 +1,102 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using Cookbook.ViewModels
+@model RecipeViewModel
+<html>
+<head>
+    <title>Cookbook</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+</head>
+<body>
+    <h1>Create new recipe</h1>
+    <label for="Recipe_Name">Recipe name:</label>
+    <input asp-for="Recipe.Name" />
+    <label for="Ingredients">Ingredients</label>
+    <div id="Ingredients">
+        <div class="ingredient">
+            <label asp-for="Recipe.Ingredients[0].Name">Name:</label>
+            <input asp-for="Recipe.Ingredients[0].Name" />
+            <label asp-for="Recipe.Ingredients[0].Amount">Amount:</label>
+            <input asp-for="Recipe.Ingredients[0].Amount" />
+            <label asp-for="Recipe.Ingredients[0].MeasuringUnit">Measuring unit:</label>
+            <input asp-for="Recipe.Ingredients[0].MeasuringUnit" />
+        </div>
+    </div>
+    <button id="addInputsForIngredient">New ingredient</button>
+    <label for="Steps">Steps</label>
+    <div id="Steps">
+        <div class="step">
+            <label>1.</label>
+            <label asp-for="Recipe.Steps[0].Description">Description:</label>
+            <input asp-for="Recipe.Steps[0].Description" />
+        </div>
+    </div>
+    <button id="addInputsForStep">New step</button>
+</body>
+</html>
+<script>
+    $(document).ready(function () {
+        $("#addInputsForIngredient").click(addInputsForIngredient);
+        $("#addInputsForStep").click(addInputsForStep);
+    });
+
+    var ingredientNum = 0;
+    function addInputsForIngredient() {
+        ingredientNum++;
+
+        var ingredientDiv = $("<div>");
+        ingredientDiv.attr({ class: 'ingredient' });
+
+        var labelName = $("<label>").text("Name:");
+        labelName.attr({ for: 'Recipe_Ingredients_' + ingredientNum + '__Name' });
+
+        var inputName = $("<input>");
+        inputName.attr({ type: 'text' });
+        inputName.attr({ id: 'Recipe_Ingredients_' + ingredientNum + '__Name' });
+        inputName.attr({ name: 'Recipe.Ingredients[' + ingredientNum + '].Name' });
+
+        var labelAmount = $("<label>").text("Amount:");
+        labelAmount.attr({ for: 'Recipe_Ingredients_' + ingredientNum + '__Amount' });
+        var inputAmount = $("<input>");
+        inputAmount.attr({ type: 'number' });
+        inputAmount.attr({ id: 'Recipe_Ingredients_' + ingredientNum + '__Amount' });
+        inputAmount.attr({ name: 'Recipe.Ingredients[' + ingredientNum + '].Amount' });
+
+        var labelMeasuringUnit = $("<label>").text("Measuring unit:");
+        labelMeasuringUnit.attr({ for: 'Recipe_Ingredients_' + ingredientNum + '__MeasuringUnit' });
+        var inputMeasuringUnit = $("<input>");
+        inputMeasuringUnit.attr({ type: 'text' });
+        inputMeasuringUnit.attr({ id: 'Recipe_Ingredients_' + ingredientNum + '__MeasuringUnit' });
+        inputMeasuringUnit.attr({ name: 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit' });
+
+        ingredientDiv.append(labelName);
+        ingredientDiv.append(inputName);
+        ingredientDiv.append(labelAmount);
+        ingredientDiv.append(inputAmount);
+        ingredientDiv.append(labelMeasuringUnit);
+        ingredientDiv.append(inputMeasuringUnit);
+        $("#Ingredients").append(ingredientDiv);
+    }
+
+    var stepNum = 0;
+    function addInputsForStep() {
+        stepNum++;
+
+        var stepDiv = $("<div>");
+        stepDiv.attr({ class: 'step' });
+
+        var labelOrder = $("<label>").text((stepNum + 1).toString() + ".");
+
+        var labelDesc = $("<label>").text("Description:");
+        labelDesc.attr({ for: 'Recipe_Steps_' + stepNum + '__Description' });
+
+        var inputDesc = $("<input>");
+        inputDesc.attr({ type: 'text' });
+        inputDesc.attr({ id: 'Recipe_Steps_' + stepNum + '__Description' });
+        inputDesc.attr({ name: 'Recipe.Steps[' + stepNum + '].Description' });
+
+        stepDiv.append(labelOrder);
+        stepDiv.append(labelDesc);
+        stepDiv.append(inputDesc);
+        $("#Steps").append(stepDiv);
+    }
+</script>

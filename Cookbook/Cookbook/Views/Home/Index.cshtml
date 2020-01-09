@@ -1,4 +1,5 @@
-﻿<html>
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+<html>
 <head>
     <title>Cookbook</title>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
@@ -15,6 +16,7 @@
             }
         }
     </div>
+    <a asp-controller="Recipe" asp-action="NewRecipe" class="navbar-brand">Add new recipe</a>
 </body>
 </html>
 <script>

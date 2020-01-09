@@ -2,6 +2,7 @@
 using Cookbook.DTO;
 using Cookbook.Interfaces;
 using Cookbook.Models;
+using Cookbook.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
@@ -91,6 +92,15 @@ namespace Cookbook.LowerLevelTests
 
             Assert.Null(recipeController.ViewBag.Recipe);
             Assert.Equal("The requested recipe cannot be displayed", recipeController.ViewBag.NoRecipe);
+        }
+
+        [Fact]
+        public void NewRecipeShould()
+        {
+            Mock<IRecipeRepository> recipeRepository = new Mock<IRecipeRepository>();
+            RecipeController recipeController = new RecipeController(recipeRepository.Object);
+            var result = recipeController.NewRecipe();
+            var viewResult = Assert.IsType<ViewResult>(result);
         }
     }
 }
