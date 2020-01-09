@@ -12,22 +12,24 @@
     <input asp-for="Recipe.Name" />
     <label for="Ingredients">Ingredients</label>
     <div id="Ingredients">
-        <div class="ingredient">
+        <div class="ingredient" id="0">
             <label asp-for="Recipe.Ingredients[0].Name">Name:</label>
             <input asp-for="Recipe.Ingredients[0].Name" />
             <label asp-for="Recipe.Ingredients[0].Amount">Amount:</label>
             <input asp-for="Recipe.Ingredients[0].Amount" />
             <label asp-for="Recipe.Ingredients[0].MeasuringUnit">Measuring unit:</label>
             <input asp-for="Recipe.Ingredients[0].MeasuringUnit" />
+            <button id="deleteIngredient">Delete ingredient</button>
         </div>
     </div>
     <button id="addInputsForIngredient">New ingredient</button>
     <label for="Steps">Steps</label>
     <div id="Steps">
-        <div class="step">
+        <div class="step" id="0">
             <label>1.</label>
             <label asp-for="Recipe.Steps[0].Description">Description:</label>
             <input asp-for="Recipe.Steps[0].Description" />
+            <button id="deleteStep">Delete step</button>
         </div>
     </div>
     <button id="addInputsForStep">New step</button>
@@ -37,6 +39,9 @@
     $(document).ready(function () {
         $("#addInputsForIngredient").click(addInputsForIngredient);
         $("#addInputsForStep").click(addInputsForStep);
+
+        $("#deleteIngredient").click(deleteIngredient);
+        $("#deleteStep").click(deleteStep);
     });
 
     var ingredientNum = 0;
@@ -45,6 +50,7 @@
 
         var ingredientDiv = $("<div>");
         ingredientDiv.attr({ class: 'ingredient' });
+        ingredientDiv.attr({ id: ingredientNum.toString() });
 
         var labelName = $("<label>").text("Name:");
         labelName.attr({ for: 'Recipe_Ingredients_' + ingredientNum + '__Name' });
@@ -68,13 +74,42 @@
         inputMeasuringUnit.attr({ id: 'Recipe_Ingredients_' + ingredientNum + '__MeasuringUnit' });
         inputMeasuringUnit.attr({ name: 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit' });
 
+        var deleteButton = $('<button>').text("Delete ingredient");
+        deleteButton.attr({ id: 'deleteIngredient' });
+        deleteButton.click(deleteIngredient);
+
         ingredientDiv.append(labelName);
         ingredientDiv.append(inputName);
         ingredientDiv.append(labelAmount);
         ingredientDiv.append(inputAmount);
         ingredientDiv.append(labelMeasuringUnit);
         ingredientDiv.append(inputMeasuringUnit);
+        ingredientDiv.append(deleteButton);
+
         $("#Ingredients").append(ingredientDiv);
+    }
+
+    function deleteIngredient() {
+        if (ingredientNum > 0) {
+            var ingredientId = event.srcElement.parentElement.id;
+
+            var k;
+            for (var k = parseInt(ingredientId); k < $("#Ingredients").children().length - 1; k++) {
+                kNext = k + 1;
+                $("#Recipe_Ingredients_" + k + "__Name").val($("#Recipe_Ingredients_" + kNext + "__Name").val());
+                $("#Recipe_Ingredients_" + k + "__Amount").val($("#Recipe_Ingredients_" + kNext + "__Amount").val());
+                $("#Recipe_Ingredients_" + k + "__MeasuringUnit").val($("#Recipe_Ingredients_" + kNext + "__MeasuringUnit").val());
+            }
+
+            $("#Ingredients").children().last().remove();
+            ingredientNum -= 1;
+        } else {
+            if (ingredientNum == 0) {
+                $("#Recipe_Ingredients_0__Name").val("");
+                $("#Recipe_Ingredients_0__Amount").val("");
+                $("#Recipe_Ingredients_0__MeasuringUnit").val("");
+            }
+        }
     }
 
     var stepNum = 0;
@@ -83,6 +118,7 @@
 
         var stepDiv = $("<div>");
         stepDiv.attr({ class: 'step' });
+        stepDiv.attr({ id: stepNum.toString() });
 
         var labelOrder = $("<label>").text((stepNum + 1).toString() + ".");
 
@@ -94,9 +130,33 @@
         inputDesc.attr({ id: 'Recipe_Steps_' + stepNum + '__Description' });
         inputDesc.attr({ name: 'Recipe.Steps[' + stepNum + '].Description' });
 
+        var deleteButton = $('<button>').text("Delete step");
+        deleteButton.attr({ id: 'deleteStep' });
+        deleteButton.click(deleteStep);
+
         stepDiv.append(labelOrder);
         stepDiv.append(labelDesc);
         stepDiv.append(inputDesc);
+        stepDiv.append(deleteButton);
         $("#Steps").append(stepDiv);
+    }
+
+    function deleteStep() {
+        if (stepNum > 0) {
+            var stepId = event.srcElement.parentElement.id;
+
+            for (var k = parseInt(stepId); k < $("#Steps").children().length - 1; k++) {
+                kNext = k + 1;
+                $("#Recipe_Steps_" + k + "__Description").val($("#Recipe_Steps_" + kNext + "__Description").val());
+            }
+
+            $("#Steps").children().last().remove();
+            stepNum--;
+        } else {
+            if (stepNum == 0) {
+                $("#Recipe_Steps_0__Description").val("");
+            }
+        }
+        
     }
 </script>
