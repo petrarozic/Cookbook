@@ -29,6 +29,8 @@
             <label>1.</label>
             <label asp-for="Recipe.Steps[0].Description">Description:</label>
             <input asp-for="Recipe.Steps[0].Description" />
+            <button id="moveUpStep">Move up</button>
+            <button id="moveDownStep">Move down</button>
             <button id="deleteStep">Delete step</button>
         </div>
     </div>
@@ -42,6 +44,8 @@
 
         $("#deleteIngredient").click(deleteIngredient);
         $("#deleteStep").click(deleteStep);
+
+        $("#moveUpStep").click(moveUpStep);
     });
 
     var ingredientNum = 0;
@@ -130,6 +134,14 @@
         inputDesc.attr({ id: 'Recipe_Steps_' + stepNum + '__Description' });
         inputDesc.attr({ name: 'Recipe.Steps[' + stepNum + '].Description' });
 
+        var moveUpButton = $('<button>').text("Move up");
+        moveUpButton.attr({ id: 'moveUpStep' });
+        moveUpButton.click(moveUpStep);
+
+        var moveDownButton = $('<button>').text("Move down");
+        moveDownButton.attr({ id: 'moveDownStep' });
+        moveDownButton.click(moveDownStep);
+
         var deleteButton = $('<button>').text("Delete step");
         deleteButton.attr({ id: 'deleteStep' });
         deleteButton.click(deleteStep);
@@ -137,7 +149,10 @@
         stepDiv.append(labelOrder);
         stepDiv.append(labelDesc);
         stepDiv.append(inputDesc);
+        stepDiv.append(moveUpButton);
+        stepDiv.append(moveDownButton);
         stepDiv.append(deleteButton);
+
         $("#Steps").append(stepDiv);
     }
 
@@ -158,5 +173,27 @@
             }
         }
         
+    }
+
+    function moveUpStep() {
+        var stepId = event.srcElement.parentElement.id;
+        var previousStepId = (parseInt(stepId) - 1).toString();
+
+        if (parseInt(stepId) > 0) {
+            var str = $("#Recipe_Steps_" + previousStepId + "__Description").val();
+            $("#Recipe_Steps_" + previousStepId + "__Description").val($("#Recipe_Steps_" + stepId + "__Description").val());
+            $("#Recipe_Steps_" + stepId + "__Description").val(str);
+        }
+    }
+
+    function moveDownStep() {
+        var stepId = event.srcElement.parentElement.id;
+        var previousStepId = (parseInt(stepId) + 1).toString();
+
+        if (stepId < stepNum) {
+            var str = $("#Recipe_Steps_" + stepId + "__Description").val();
+            $("#Recipe_Steps_" + stepId + "__Description").val($("#Recipe_Steps_" + previousStepId + "__Description").val());
+            $("#Recipe_Steps_" + previousStepId + "__Description").val(str);
+        }
     }
 </script>
