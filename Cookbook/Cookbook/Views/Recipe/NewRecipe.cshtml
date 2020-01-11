@@ -8,33 +8,36 @@
 </head>
 <body>
     <h1>Create new recipe</h1>
-    <label for="Recipe_Name">Recipe name:</label>
-    <input asp-for="Recipe.Name" />
-    <label for="Ingredients">Ingredients</label>
-    <div id="Ingredients">
-        <div class="ingredient" id="0">
-            <label asp-for="Recipe.Ingredients[0].Name">Name:</label>
-            <input asp-for="Recipe.Ingredients[0].Name" />
-            <label asp-for="Recipe.Ingredients[0].Amount">Amount:</label>
-            <input asp-for="Recipe.Ingredients[0].Amount" />
-            <label asp-for="Recipe.Ingredients[0].MeasuringUnit">Measuring unit:</label>
-            <input asp-for="Recipe.Ingredients[0].MeasuringUnit" />
-            <button id="deleteIngredient">Delete ingredient</button>
+        <label for="Recipe_Name">Recipe name:</label>
+        <input asp-for="Recipe.Name" />
+        <label for="Ingredients">Ingredients</label>
+        <div id="Ingredients">
+            <div class="ingredient" id="0">
+                <label asp-for="Recipe.Ingredients[0].Name">Name:</label>
+                <input asp-for="Recipe.Ingredients[0].Name" />
+                <label asp-for="Recipe.Ingredients[0].Amount">Amount:</label>
+                <input asp-for="Recipe.Ingredients[0].Amount" />
+                <label asp-for="Recipe.Ingredients[0].MeasuringUnit">Measuring unit:</label>
+                <input asp-for="Recipe.Ingredients[0].MeasuringUnit" />
+                <button id="deleteIngredient" type="button">Delete ingredient</button>
+            </div>
         </div>
-    </div>
-    <button id="addInputsForIngredient">New ingredient</button>
-    <label for="Steps">Steps</label>
-    <div id="Steps">
-        <div class="step" id="0">
-            <label>1.</label>
-            <label asp-for="Recipe.Steps[0].Description">Description:</label>
-            <input asp-for="Recipe.Steps[0].Description" />
-            <button id="moveUpStep">Move up</button>
-            <button id="moveDownStep">Move down</button>
-            <button id="deleteStep">Delete step</button>
+        <button id="addInputsForIngredient" type="button">New ingredient</button>
+        <label for="Steps">Steps</label>
+        <div id="Steps">
+            <div class="step" id="0">
+                <label>1.</label>
+                <label asp-for="Recipe.Steps[0].Description">Description:</label>
+                <input asp-for="Recipe.Steps[0].Description" />
+                <button id="moveUpStep" type="button">Move up</button>
+                <button id="moveDownStep" type="button">Move down</button>
+                <button id="deleteStep" type="button">Delete step</button>
+            </div>
         </div>
-    </div>
-    <button id="addInputsForStep">New step</button>
+        <button id="addInputsForStep" type="button">New step</button>
+        <a asp-controller="Home" asp-action="Index">Cancel</a>
+        <a asp-controller="Recipe" asp-action="NewRecipe">Reset</a>
+        <input type="submit" value="Add recipe" />
 </body>
 </html>
 <script>
@@ -46,6 +49,7 @@
         $("#deleteStep").click(deleteStep);
 
         $("#moveUpStep").click(moveUpStep);
+        $("#moveDownStep").click(moveDownStep);
     });
 
     var ingredientNum = 0;
@@ -80,6 +84,7 @@
 
         var deleteButton = $('<button>').text("Delete ingredient");
         deleteButton.attr({ id: 'deleteIngredient' });
+        deleteButton.attr({ type: 'button' });
         deleteButton.click(deleteIngredient);
 
         ingredientDiv.append(labelName);
@@ -136,14 +141,17 @@
 
         var moveUpButton = $('<button>').text("Move up");
         moveUpButton.attr({ id: 'moveUpStep' });
+        moveUpButton.attr({ type: 'button' });
         moveUpButton.click(moveUpStep);
 
         var moveDownButton = $('<button>').text("Move down");
         moveDownButton.attr({ id: 'moveDownStep' });
+        moveDownButton.attr({ type: 'button' });
         moveDownButton.click(moveDownStep);
 
         var deleteButton = $('<button>').text("Delete step");
         deleteButton.attr({ id: 'deleteStep' });
+        deleteButton.attr({ type: 'button' });
         deleteButton.click(deleteStep);
 
         stepDiv.append(labelOrder);
