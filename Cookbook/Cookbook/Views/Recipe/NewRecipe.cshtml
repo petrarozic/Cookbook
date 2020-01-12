@@ -8,6 +8,7 @@
 </head>
 <body>
     <h1>Create new recipe</h1>
+    <form asp-action="AddRecipe" method="post">
         <label for="Recipe_Name">Recipe name:</label>
         <input asp-for="Recipe.Name" />
         <label for="Ingredients">Ingredients</label>
@@ -38,6 +39,7 @@
         <a asp-controller="Home" asp-action="Index">Cancel</a>
         <a asp-controller="Recipe" asp-action="NewRecipe">Reset</a>
         <input type="submit" value="Add recipe" />
+    </form>
 </body>
 </html>
 <script>

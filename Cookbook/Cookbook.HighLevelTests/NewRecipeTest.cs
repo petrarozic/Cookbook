@@ -66,59 +66,39 @@ namespace Cookbook.HighLevelTests
             _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
             DelayForDemoVideo();
 
-            var addNewIngredientButton = _driver.FindElement(By.Id("addInputsForIngredient"));
-            addNewIngredientButton.Click();
-            addNewIngredientButton.Click();
+            var ingredients = SetIngredients(3);
+            Assert.Equal(3, ingredients.Count);
+
+            _driver.FindElement(
+                By.XPath("//div[@id = '"+ ingredientIndex.ToString() + "' and @class = 'ingredient']//button[@id = 'deleteIngredient']")
+                ).Click();
             DelayForDemoVideo();
 
-            List<IngredientDTO> ingredientValues = new List<IngredientDTO>
+            List<IngredientDTO> resultIngredientValues = new List<IngredientDTO>
             {
                 new IngredientDTO{ Name="Juneće meso", Amount=400, MeasuringUnit="g"},
                 new IngredientDTO{ Name="Crveni luk", Amount=1, MeasuringUnit="kom"},
                 new IngredientDTO{ Name="Češnjeva", Amount=2, MeasuringUnit="kom"}
             };
-
-            var ingredients = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Ingredients')]/@for)]"))
-                                    .FindElements(By.ClassName("ingredient"));
-            Assert.Equal(3, ingredients.Count);
-
-            int ingredientNum = 0;
-            foreach(var x in ingredients)
-            {
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Name')]/@for)]"))
-                    .SendKeys(ingredientValues[ingredientNum].Name);
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Amount')]/@for)]"))
-                    .SendKeys(ingredientValues[ingredientNum].Amount.ToString());
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Measuring unit')]/@for)]"))
-                    .SendKeys(ingredientValues[ingredientNum].MeasuringUnit);
-                DelayForDemoVideo();
-                ingredientNum++;
-            }
-
-            _driver.FindElement(
-                By.XPath("//div[@id = '"+ ingredientIndex.ToString() + "' and @class = 'ingredient']//button[@id = 'deleteIngredient']")
-                ).Click();
-
-            DelayForDemoVideo();
-            ingredientValues.RemoveAt(ingredientIndex);
+            resultIngredientValues.RemoveAt(ingredientIndex);
 
             ingredients = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Ingredients')]/@for)]"))
                                     .FindElements(By.ClassName("ingredient"));
             Assert.Equal(2, ingredients.Count);
 
-            ingredientNum = 0;
+            var ingredientNum = 0;
             foreach (var x in ingredients)
             {
                 Assert.Equal(
-                    ingredientValues[ingredientNum].Name,
+                    resultIngredientValues[ingredientNum].Name,
                     x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Name')]/@for)]")).GetAttribute("value")
                     );
                 Assert.Equal(
-                    ingredientValues[ingredientNum].Amount.ToString(), 
+                    resultIngredientValues[ingredientNum].Amount.ToString(), 
                     x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Amount')]/@for)]")).GetAttribute("value")
                     );
                 Assert.Equal(
-                    ingredientValues[ingredientNum].MeasuringUnit, 
+                    resultIngredientValues[ingredientNum].MeasuringUnit, 
                     x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Measuring unit')]/@for)]")).GetAttribute("value")
                     );
 
@@ -134,25 +114,8 @@ namespace Cookbook.HighLevelTests
             _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
             DelayForDemoVideo();
 
-            List<IngredientDTO> ingredientValues = new List<IngredientDTO>
-            {
-                new IngredientDTO{ Name="Juneće meso", Amount=400, MeasuringUnit="g"}
-            };
-
-            var ingredients = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Ingredients')]/@for)]"))
-                                    .FindElements(By.ClassName("ingredient"));
+            var ingredients = SetIngredients(1);
             Assert.Single(ingredients);
-
-            foreach (var x in ingredients)
-            {
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Name')]/@for)]"))
-                    .SendKeys(ingredientValues[0].Name);
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Amount')]/@for)]"))
-                    .SendKeys(ingredientValues[0].Amount.ToString());
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Measuring unit')]/@for)]"))
-                    .SendKeys(ingredientValues[0].MeasuringUnit);
-                DelayForDemoVideo();
-            }
 
             _driver.FindElement(
                 By.XPath("//div[@id = '0' and @class = 'ingredient']//button[@id = 'deleteIngredient']")
@@ -190,47 +153,31 @@ namespace Cookbook.HighLevelTests
             _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
             DelayForDemoVideo();
 
-            var addNewStepButton = _driver.FindElement(By.Id("addInputsForStep"));
-            addNewStepButton.Click();
-            addNewStepButton.Click();
-            DelayForDemoVideo();
-
-            List<StepDTO> stepValues = new List<StepDTO>
-            {
-                new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"},
-                new StepDTO{ Order = 1, Description = "Oblikuj čufte"},
-                new StepDTO{ Order = 1, Description = "Kratko ih prži na ulju"}
-            };
-
-            var steps = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
-                                   .FindElements(By.ClassName("step"));
+            var steps = SetSteps(3);
             Assert.Equal(3, steps.Count);
-
-            int stepNum = 0;
-            foreach (var x in steps)
-            {
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Description')]/@for)]"))
-                    .SendKeys(stepValues[stepNum].Description);
-                DelayForDemoVideo();
-                stepNum++;
-            }
 
             _driver.FindElement(
                By.XPath("//div[@id = '" + stepIndex.ToString() + "' and @class = 'step']//button[@id = 'deleteStep']")
                ).Click();
-
             DelayForDemoVideo();
-            stepValues.RemoveAt(stepIndex);
+
+            List<StepDTO> resultStepValues = new List<StepDTO>
+            {
+                new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"},
+                new StepDTO{ Order = 2, Description = "Oblikuj čufte"},
+                new StepDTO{ Order = 3, Description = "Kratko ih prži na ulju"}
+            };
+            resultStepValues.RemoveAt(stepIndex);
 
             steps = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
                                     .FindElements(By.ClassName("step"));
             Assert.Equal(2, steps.Count);
 
-            stepNum = 0;
+            var stepNum = 0;
             foreach (var x in steps)
             {
                 Assert.Equal(
-                    stepValues[stepNum].Description,
+                    resultStepValues[stepNum].Description,
                     x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Description')]/@for)]")).GetAttribute("value")
                     );
                 stepNum++;
@@ -245,26 +192,12 @@ namespace Cookbook.HighLevelTests
             _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
             DelayForDemoVideo();
 
-            List<StepDTO> stepValues = new List<StepDTO>
-            {
-                new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"}
-            };
-
-            var steps = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
-                                   .FindElements(By.ClassName("step"));
+            var steps = SetSteps(1);
             Assert.Single(steps);
-
-            foreach (var x in steps)
-            {
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Description')]/@for)]"))
-                    .SendKeys(stepValues[0].Description);
-                DelayForDemoVideo();
-            }
 
             _driver.FindElement(
                By.XPath("//div[@id = '0' and @class = 'step']//button[@id = 'deleteStep']")
                ).Click();
-
             DelayForDemoVideo();
 
             steps = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
@@ -287,30 +220,8 @@ namespace Cookbook.HighLevelTests
             _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
             DelayForDemoVideo();
 
-            var addNewStepButton = _driver.FindElement(By.Id("addInputsForStep"));
-            addNewStepButton.Click();
-            addNewStepButton.Click();
-            DelayForDemoVideo();
-
-            List<StepDTO> stepValues = new List<StepDTO>
-            {
-                new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"},
-                new StepDTO{ Order = 1, Description = "Oblikuj čufte"},
-                new StepDTO{ Order = 1, Description = "Kratko ih prži na ulju"}
-            };
-
-            var steps = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
-                                   .FindElements(By.ClassName("step"));
+            var steps = SetSteps(3);
             Assert.Equal(3, steps.Count);
-
-            int stepNum = 0;
-            foreach (var x in steps)
-            {
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Description')]/@for)]"))
-                    .SendKeys(stepValues[stepNum].Description);
-                DelayForDemoVideo();
-                stepNum++;
-            }
 
             _driver.FindElement(
                By.XPath("//div[@id = '1' and @class = 'step']//button[@id = 'moveUpStep']")
@@ -320,15 +231,15 @@ namespace Cookbook.HighLevelTests
             List<StepDTO> resultStepValues = new List<StepDTO>
             {
                 new StepDTO{ Order = 1, Description = "Oblikuj čufte"},
-                new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"},
-                new StepDTO{ Order = 1, Description = "Kratko ih prži na ulju"}
+                new StepDTO{ Order = 2, Description = "U posudi promješajte sve sastojke za čufte"},
+                new StepDTO{ Order = 3, Description = "Kratko ih prži na ulju"}
             };
 
             steps = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
                                     .FindElements(By.ClassName("step"));
             Assert.Equal(3, steps.Count);
 
-            stepNum = 0;
+            int stepNum = 0;
             foreach (var x in steps)
             {
                 Assert.Equal(
@@ -347,21 +258,8 @@ namespace Cookbook.HighLevelTests
             _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
             DelayForDemoVideo();
 
-            List<StepDTO> stepValues = new List<StepDTO>
-            {
-                new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"}
-            };
-
-            var steps = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
-                                   .FindElements(By.ClassName("step"));
+            var steps = SetSteps(1);
             Assert.Single(steps);
-
-            foreach (var x in steps)
-            {
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Description')]/@for)]"))
-                    .SendKeys(stepValues[0].Description);
-                DelayForDemoVideo();
-            }
 
             _driver.FindElement(
                By.XPath("//div[@id = '0' and @class = 'step']//button[@id = 'moveUpStep']")
@@ -372,10 +270,15 @@ namespace Cookbook.HighLevelTests
                                     .FindElements(By.ClassName("step"));
             Assert.Single(steps);
 
+            List<StepDTO> resultStepValues = new List<StepDTO>
+            {
+                new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"}
+            };
+
             foreach (var x in steps)
             {
                 Assert.Equal(
-                    stepValues[0].Description,
+                    resultStepValues[0].Description,
                     x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Description')]/@for)]")).GetAttribute("value")
                     );
             }
@@ -389,30 +292,8 @@ namespace Cookbook.HighLevelTests
             _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
             DelayForDemoVideo();
 
-            var addNewStepButton = _driver.FindElement(By.Id("addInputsForStep"));
-            addNewStepButton.Click();
-            addNewStepButton.Click();
-            DelayForDemoVideo();
-
-            List<StepDTO> stepValues = new List<StepDTO>
-            {
-                new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"},
-                new StepDTO{ Order = 1, Description = "Oblikuj čufte"},
-                new StepDTO{ Order = 1, Description = "Kratko ih prži na ulju"}
-            };
-
-            var steps = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
-                                   .FindElements(By.ClassName("step"));
+            var steps = SetSteps(3);
             Assert.Equal(3, steps.Count);
-
-            int stepNum = 0;
-            foreach (var x in steps)
-            {
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Description')]/@for)]"))
-                    .SendKeys(stepValues[stepNum].Description);
-                DelayForDemoVideo();
-                stepNum++;
-            }
 
             _driver.FindElement(
                By.XPath("//div[@id = '1' and @class = 'step']//button[@id = 'moveDownStep']")
@@ -422,15 +303,15 @@ namespace Cookbook.HighLevelTests
             List<StepDTO> resultStepValues = new List<StepDTO>
             {
                 new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"},
-                new StepDTO{ Order = 1, Description = "Kratko ih prži na ulju"},
-                new StepDTO{ Order = 1, Description = "Oblikuj čufte"}
+                new StepDTO{ Order = 2, Description = "Kratko ih prži na ulju"},
+                new StepDTO{ Order = 3, Description = "Oblikuj čufte"}
             };
 
             steps = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
                                     .FindElements(By.ClassName("step"));
             Assert.Equal(3, steps.Count);
 
-            stepNum = 0;
+            int stepNum = 0;
             foreach (var x in steps)
             {
                 Assert.Equal(
@@ -449,28 +330,8 @@ namespace Cookbook.HighLevelTests
             _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
             DelayForDemoVideo();
 
-            var addNewStepButton = _driver.FindElement(By.Id("addInputsForStep"));
-            addNewStepButton.Click();
-            DelayForDemoVideo();
-
-            List<StepDTO> stepValues = new List<StepDTO>
-            {
-                new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"},
-                new StepDTO{ Order = 1, Description = "Kratko ih prži na ulju"}
-            };
-
-            var steps = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
-                                   .FindElements(By.ClassName("step"));
+            var steps = SetSteps(2);
             Assert.Equal(2, steps.Count);
-
-            var stepNum = 0;
-            foreach (var x in steps)
-            {
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Description')]/@for)]"))
-                    .SendKeys(stepValues[stepNum].Description);
-                DelayForDemoVideo();
-                stepNum++;
-            }
 
             _driver.FindElement(
                By.XPath("//div[@id = '1' and @class = 'step']//button[@id = 'moveDownStep']")
@@ -481,11 +342,17 @@ namespace Cookbook.HighLevelTests
                                     .FindElements(By.ClassName("step"));
             Assert.Equal(2, steps.Count);
 
-            stepNum = 0;
+            List<StepDTO> resultStepValues = new List<StepDTO>
+            {
+                new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"},
+                new StepDTO{ Order = 2, Description = "Oblikuj čufte"}
+            };
+
+            int stepNum = 0;
             foreach (var x in steps)
             {
                 Assert.Equal(
-                    stepValues[stepNum].Description,
+                    resultStepValues[stepNum].Description,
                     x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Description')]/@for)]")).GetAttribute("value")
                     );
                 stepNum++;
@@ -515,63 +382,17 @@ namespace Cookbook.HighLevelTests
             _driver.FindElement(By.XPath("//input[@id=(//label[contains(text(), 'Recipe name')]/@for)]"))
                 .SendKeys("Čufte u paradajiz sosu");
 
-            var addNewIngredientButton = _driver.FindElement(By.Id("addInputsForIngredient"));
-            addNewIngredientButton.Click();
-            addNewIngredientButton.Click();
-            DelayForDemoVideo();
+            var ingredients = SetIngredients(3);
+            Assert.Equal(3, ingredients.Count);
 
-            List<IngredientDTO> ingredientValues = new List<IngredientDTO>
-            {
-                new IngredientDTO{ Name="Juneće meso", Amount=400, MeasuringUnit="g"},
-                new IngredientDTO{ Name="Crveni luk", Amount=1, MeasuringUnit="kom"},
-                new IngredientDTO{ Name="Češnjeva", Amount=2, MeasuringUnit="kom"}
-            };
+            var steps = SetSteps(3);
+            Assert.Equal(3, steps.Count);
 
-            var ingredients = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Ingredients')]/@for)]"))
-                                    .FindElements(By.ClassName("ingredient"));
-
-            int ingredientNum = 0;
-            foreach (var x in ingredients)
-            {
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Name')]/@for)]"))
-                    .SendKeys(ingredientValues[ingredientNum].Name);
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Amount')]/@for)]"))
-                    .SendKeys(ingredientValues[ingredientNum].Amount.ToString());
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Measuring unit')]/@for)]"))
-                    .SendKeys(ingredientValues[ingredientNum].MeasuringUnit);
-                DelayForDemoVideo();
-                ingredientNum++;
-            }
-            Assert.Equal(3, ingredientNum);
-
-            var addNewStepButton = _driver.FindElement(By.Id("addInputsForStep"));
-            addNewStepButton.Click();
-            addNewStepButton.Click();
-            DelayForDemoVideo();
-
-            List<StepDTO> stepValues = new List<StepDTO>
-            {
-                new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"},
-                new StepDTO{ Order = 1, Description = "Oblikuj čufte"},
-                new StepDTO{ Order = 1, Description = "Kratko ih prži na ulju"}
-            };
-
-            var steps = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
-                                   .FindElements(By.ClassName("step"));
-
-            int stepNum = 0;
-            foreach (var x in steps)
-            {
-                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Description')]/@for)]"))
-                    .SendKeys(stepValues[stepNum].Description);
-                DelayForDemoVideo();
-                stepNum++;
-            }
-            Assert.Equal(3, stepNum);
             _driver.FindElement(By.XPath("//a[@href='/Recipe/NewRecipe' and contains(text(), 'Reset')]")).Click();
             DelayForDemoVideo();
 
             TestElementsInForm(1, 1);
+
             Assert.Equal("",
                 _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
                                    .FindElement(By.ClassName("step"))
@@ -581,6 +402,7 @@ namespace Cookbook.HighLevelTests
 
             var ingredient = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Ingredients')]/@for)]"))
                         .FindElement(By.ClassName("ingredient"));
+
             Assert.Equal("",
                 ingredient.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Name')]/@for)]"))
                     .GetAttribute("value")
@@ -593,6 +415,28 @@ namespace Cookbook.HighLevelTests
                 ingredient.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Measuring unit')]/@for)]"))
                     .GetAttribute("value")
                 );
+        }
+
+        [Fact]
+        public void SaveNewRecipe()
+        {
+            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
+            DelayForDemoVideo();
+
+            _driver.FindElement(By.XPath("//input[@id=(//label[contains(text(), 'Recipe name')]/@for)]"))
+                .SendKeys("Čufte u paradajiz sosu");
+            var ingredients = SetIngredients();
+            var steps = SetSteps();
+
+            var form = _driver.FindElement(By.TagName("form"));
+            Assert.Equal("post", form.GetAttribute("method"));
+            Assert.Matches(@".*\/Recipe\/AddRecipe", form.GetAttribute("action"));
+
+            _driver.FindElement(By.XPath("//input[@type='submit' and @value = 'Add recipe']")).Click();
+            DelayForDemoVideo();
+
+            Assert.Matches(@"http:\/\/localhost:58883\/Recipe\/[1-9]+$", _driver.Url);
+            //TODO..
         }
 
         private void TestElementsInForm(int expectedNumOfIngredients, int expecteNumOfSteps)
@@ -714,6 +558,78 @@ namespace Cookbook.HighLevelTests
 
             var moveDownButton = element.FindElement(By.XPath(".//button[@id='moveDownStep'  and @type='button']"));
             Assert.NotNull(moveDownButton);
+        }
+
+        private IReadOnlyCollection<IWebElement> SetIngredients(int ingredientNum = 9)
+        {
+            if (ingredientNum > 9) throw new System.ArgumentException("Number of ingredients cannot be greater than 9", "ingredientNum");
+
+            List<IngredientDTO> ingredientValues = new List<IngredientDTO>
+            {
+                new IngredientDTO{ Name="Juneće meso", Amount=400, MeasuringUnit="g"},
+                new IngredientDTO{ Name="Crveni luk", Amount=1, MeasuringUnit="kom"},
+                new IngredientDTO{ Name="Češnjeva", Amount=2, MeasuringUnit="kom"},
+                new IngredientDTO{ Name="Stari kruh", Amount=1, MeasuringUnit="kom"},
+                new IngredientDTO{ Name="Jaje", Amount=1, MeasuringUnit="kom"},
+                new IngredientDTO{ Name="Paradajiz sos", Amount=400, MeasuringUnit="ml"},
+                new IngredientDTO{ Name="Vode", Amount=400, MeasuringUnit="ml"},
+                new IngredientDTO{ Name="Brašna", Amount=2, MeasuringUnit="žlice"},
+                new IngredientDTO{ Name="Mlijevena paprika", Amount=2, MeasuringUnit="žlice"},
+            };
+
+            var addNewIngredientButton = _driver.FindElement(By.Id("addInputsForIngredient"));
+            for(var x = ingredientNum -1; x > 0; x--) addNewIngredientButton.Click();
+            DelayForDemoVideo();
+
+            var ingredients = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Ingredients')]/@for)]"))
+                                    .FindElements(By.ClassName("ingredient"));
+
+            ingredientNum = 0;
+            foreach (var x in ingredients)
+            {
+                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Name')]/@for)]"))
+                    .SendKeys(ingredientValues[ingredientNum].Name);
+                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Amount')]/@for)]"))
+                    .SendKeys(ingredientValues[ingredientNum].Amount.ToString());
+                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Measuring unit')]/@for)]"))
+                    .SendKeys(ingredientValues[ingredientNum].MeasuringUnit);
+                DelayForDemoVideo();
+                ingredientNum++;
+            }
+
+            return ingredients;
+        }
+
+        private IReadOnlyCollection<IWebElement> SetSteps(int stepNum = 6)
+        {
+            if (stepNum > 6) throw new System.ArgumentException("Number of steps cannot be greater than 6", "stepNum");
+            List<StepDTO> stepValues = new List<StepDTO>
+            {
+                new StepDTO{ Order = 1, Description = "U posudi promješajte sve sastojke za čufte"},
+                new StepDTO{ Order = 2, Description = "Oblikuj čufte"},
+                new StepDTO{ Order = 3, Description = "Kratko ih prži na ulju"},
+                new StepDTO{ Order = 4, Description = "U drugoj posudi prokuhaj sastojke za sos"},
+                new StepDTO{ Order = 5, Description = "Pržene čufte dodajte u sos"},
+                new StepDTO{ Order = 6, Description = "Dodati začine po volji"}
+            };
+
+            var addNewStepButton = _driver.FindElement(By.Id("addInputsForStep"));
+            for(var x = stepNum - 1; x > 0; x--) addNewStepButton.Click();
+            DelayForDemoVideo();
+
+            var steps = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Steps')]/@for)]"))
+                                   .FindElements(By.ClassName("step"));
+
+            stepNum = 0;
+            foreach (var x in steps)
+            {
+                x.FindElement(By.XPath(".//input[@id=(//label[contains(text(), 'Description')]/@for)]"))
+                    .SendKeys(stepValues[stepNum].Description);
+                DelayForDemoVideo();
+                stepNum++;
+            }
+
+            return steps;
         }
     }
 }
