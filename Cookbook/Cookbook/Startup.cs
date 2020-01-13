@@ -31,6 +31,7 @@ namespace Cookbook
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
             services.AddTransient<IRecipeRepository, RecipeRepository>();
+            services.AddTransient<IIngredientRepository, IngredientRepository>();
 
             services.AddMvc();
         }

@@ -12,10 +12,50 @@ namespace Cookbook.Repositories
     public class RecipeRepository : IRecipeRepository
     {
         private readonly AppDbContext _appDbContext;
+        private readonly IIngredientRepository _ingredientRepository;
 
-        public RecipeRepository(AppDbContext appDbContext)
+        public RecipeRepository(AppDbContext appDbContext, IIngredientRepository ingredientRepository)
         {
             _appDbContext = appDbContext;
+            _ingredientRepository = ingredientRepository;
+        }
+
+        public void AddRecipe(Recipe recipe)
+        {
+            recipe.RecipeIngredients = SetRecipeIngredients(recipe.RecipeIngredients.ToList());
+            _appDbContext.Recipes.Add(recipe);
+            _appDbContext.SaveChanges();
+        }
+
+        private ICollection<RecipeIngredient> SetRecipeIngredients(List<RecipeIngredient> recipeIngredients)
+        {
+            List<RecipeIngredient> setRecipeIngredients = new List<RecipeIngredient>();
+            List<String> ingredientNames = _ingredientRepository.GetAllIngredientName().ToList();
+
+            foreach (var x in recipeIngredients)
+            {
+                if (ingredientNames.Contains(x.Ingredient.Name))
+                {
+                    setRecipeIngredients.Add(
+                        new RecipeIngredient
+                        {
+                            Ingredient = _ingredientRepository.GetIngredientByName(x.Ingredient.Name),
+                            Amount = x.Amount,
+                            MeasuringUnit = x.MeasuringUnit
+                        });
+                }
+                else
+                {
+                    setRecipeIngredients.Add(
+                        new RecipeIngredient
+                        {
+                            Ingredient = new Ingredient { Name = x.Ingredient.Name },
+                            Amount = x.Amount,
+                            MeasuringUnit = x.MeasuringUnit
+                        });
+                }
+            }
+            return setRecipeIngredients;
         }
 
         public IEnumerable<Recipe> GetAllRecipe()
@@ -41,10 +81,12 @@ namespace Cookbook.Repositories
             List<IngredientDTO> ingredientDTOs = new List<IngredientDTO>();
             foreach(var x in recipe.RecipeIngredients)
             {
-                IngredientDTO ingredientDTO = new IngredientDTO();
-                ingredientDTO.Amount = x.Amount;
-                ingredientDTO.MeasuringUnit = x.MeasuringUnit;
-                ingredientDTO.Name = x.Ingredient.Name;
+                IngredientDTO ingredientDTO = new IngredientDTO
+                {
+                    Amount = x.Amount,
+                    MeasuringUnit = x.MeasuringUnit,
+                    Name = x.Ingredient.Name
+                };
 
                 ingredientDTOs.Add(ingredientDTO);
             }
@@ -53,9 +95,11 @@ namespace Cookbook.Repositories
             List<StepDTO> stepDTOs = new List<StepDTO>();
             foreach(var x in recipe.Steps)
             {
-                StepDTO stepDTO = new StepDTO();
-                stepDTO.Order = x.Order;
-                stepDTO.Description = x.Description;
+                StepDTO stepDTO = new StepDTO
+                {
+                    Order = x.Order,
+                    Description = x.Description
+                };
 
                 stepDTOs.Add(stepDTO);
             }

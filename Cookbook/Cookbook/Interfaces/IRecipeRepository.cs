@@ -11,5 +11,6 @@ namespace Cookbook.Interfaces
     {
         IEnumerable<Recipe> GetAllRecipe();
         RecipeDetailDTO GetRecipeById(int recipeId);
+        void AddRecipe(Recipe recipe);
     }
 }

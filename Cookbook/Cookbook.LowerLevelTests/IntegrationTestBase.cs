@@ -20,7 +20,7 @@ namespace Cookbook.LowerLevelTests
             new SqlConnectionStringBuilder
             {
                 DataSource = @"(LocalDB)\MSSQLLocalDB",
-                InitialCatalog = "Cookbook",
+                InitialCatalog = "CookbookDBIntegrationTest",
                 IntegratedSecurity = true
             };
     }

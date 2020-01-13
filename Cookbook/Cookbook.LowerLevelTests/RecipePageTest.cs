@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 using Moq;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using Xunit;
 
@@ -101,6 +102,49 @@ namespace Cookbook.LowerLevelTests
             RecipeController recipeController = new RecipeController(recipeRepository.Object);
             var result = recipeController.NewRecipe();
             var viewResult = Assert.IsType<ViewResult>(result);
+        }
+
+        [Fact]
+        public void AddRecipeShould()
+        {
+            Mock<IRecipeRepository> recipeRepository = new Mock<IRecipeRepository>();
+            RecipeController recipeController = new RecipeController(recipeRepository.Object);
+
+            RecipeDetailDTO recipe = new RecipeDetailDTO
+            {
+                Name = "Test recipe",
+                Ingredients = new List<IngredientDTO>
+                {
+                    new IngredientDTO{ Name = "Ing1", Amount = 1, MeasuringUnit = "kg" },
+                    new IngredientDTO{ Name = "Ing2", Amount = 2, MeasuringUnit = "dag" },
+                    new IngredientDTO{ Name = "Ing3", Amount = 3, MeasuringUnit = "g" },
+
+                },
+                Steps = new List<StepDTO>
+                {
+                    new StepDTO{ Description = "Step1" },
+                    new StepDTO{ Description = "Step2" }
+                }
+            };
+            RecipeViewModel recipeViewModel = new RecipeViewModel { Recipe = recipe };
+
+            var result = recipeController.AddRecipe(recipeViewModel);
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+
+            Assert.Equal("Index", redirectToActionResult.ActionName);
+            Assert.Equal("Recipe", redirectToActionResult.ControllerName);
+            Assert.Contains("recipeId", redirectToActionResult.RouteValues.Keys);
+        }
+
+        [Fact]
+        public void AddRecipeOnlyPOSTareAllowed()
+        {
+            var method = typeof(RecipeController).GetMethod("AddRecipe");
+            var attribute = method.GetCustomAttributes(typeof(HttpPostAttribute), false)
+                             .Cast<HttpPostAttribute>()
+                             .SingleOrDefault();
+            Assert.NotNull(attribute);
+            Assert.Contains("POST", attribute.HttpMethods);
         }
     }
 }

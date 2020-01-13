@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Cookbook.DTO;
 using Cookbook.Interfaces;
 using Cookbook.Models;
 using Cookbook.ViewModels;
@@ -34,6 +35,47 @@ namespace Cookbook.Controllers
         public IActionResult NewRecipe()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult AddRecipe(RecipeViewModel recipeViewModel)
+        {
+            Recipe recipe = ConvertRecipeDetailDTOToRecipe(recipeViewModel.Recipe);
+            _recipeRepository.AddRecipe(recipe);
+
+            return RedirectToAction("Index", "Recipe", new { recipeId = recipe.RecipeId });
+        }
+
+        private Recipe ConvertRecipeDetailDTOToRecipe(RecipeDetailDTO recipeDetailDTO)
+        {
+            Recipe recipe = new Recipe { Name = recipeDetailDTO.Name };
+
+            recipe.RecipeIngredients = new List<RecipeIngredient>();
+            foreach (var x in recipeDetailDTO.Ingredients)
+            {
+                RecipeIngredient recipeIngredient = new RecipeIngredient()
+                {
+                    Ingredient = new Ingredient() { Name = x.Name },
+                    Amount = x.Amount,
+                    MeasuringUnit = x.MeasuringUnit
+                };
+                recipe.RecipeIngredients.Add(recipeIngredient);
+            }
+
+            recipe.Steps = new List<Step>();
+            int orderNum = 0;
+            foreach (var x in recipeDetailDTO.Steps)
+            {
+                orderNum++;
+                Step step = new Step()
+                {
+                    Order = orderNum,
+                    Description = x.Description
+                };
+                recipe.Steps.Add(step);
+            }
+
+            return recipe;
         }
     }
 }

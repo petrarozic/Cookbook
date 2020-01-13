@@ -436,7 +436,6 @@ namespace Cookbook.HighLevelTests
             DelayForDemoVideo();
 
             Assert.Matches(@"http:\/\/localhost:58883\/Recipe\/[1-9]+$", _driver.Url);
-            //TODO..
         }
 
         private void TestElementsInForm(int expectedNumOfIngredients, int expecteNumOfSteps)
