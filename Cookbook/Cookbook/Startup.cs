@@ -43,6 +43,7 @@ namespace Cookbook
             {
                 app.UseDeveloperExceptionPage();
                 app.UseMvcWithDefaultRoute();
+                app.UseStaticFiles();
             }
         }
     }

@@ -1,32 +1,16 @@
-﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
-<html>
-<head>
-    <title>Cookbook</title>
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-</head>
-<body>
-    Cookbook
-    <div id="Recipes">
-        @{
-            foreach (var recipe in ViewBag.Recipes)
-            {
-                <div class="recipe" id=@recipe.RecipeId>
-                    Name: @recipe.Name
-                </div>
-            }
+﻿Cookbook
+<div id="Recipes">
+    @{
+        foreach (var recipe in ViewBag.Recipes)
+        {
+            <div class="recipe" id=@recipe.RecipeId>
+                Name: @recipe.Name
+            </div>
         }
-    </div>
-    <a asp-controller="Recipe" asp-action="NewRecipe" class="navbar-brand">Add new recipe</a>
-</body>
-</html>
-<script>
-    $(document).ready(function () {
-        $(".recipe").on("click", function (e) {
-            displayRecipe(e.target.id);
-        });
-    });
-
-    function displayRecipe(recipeId) {
-        window.location.href = "/Recipe/" + recipeId;
     }
-</script>
+</div>
+<a asp-controller="Recipe" asp-action="NewRecipe" class="navbar-brand">Add new recipe</a>
+
+@section Scripts {
+    <script src="~/Scripts/HomeIndex.js"></script>
+}

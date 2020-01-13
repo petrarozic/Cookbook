@@ -1,32 +1,25 @@
-﻿<html>
-<head>
-    <title>Cookbook</title>
-</head>
-<body>
-    @if (ViewBag.Recipe != null)
-    {
-        <h1>@ViewBag.Recipe.Name</h1>
-        <h3>Ingredients</h3>
-        <div>
-            @{
-                foreach(var ingredient in ViewBag.Recipe.Ingredients)
-                {
-                    <div>
-                        <span>@ingredient.Amount @ingredient.MeasuringUnit</span><span>@ingredient.Name</span>
-                    </div>
-                }
-             }
-        </div>
-        <h3>Steps</h3>
-        <div>
-            @foreach(var step in ViewBag.Recipe.Steps)
+﻿@if (ViewBag.Recipe != null)
+{
+    <h1>@ViewBag.Recipe.Name</h1>
+    <h3>Ingredients</h3>
+    <div>
+        @{
+            foreach(var ingredient in ViewBag.Recipe.Ingredients)
             {
                 <div>
-                     <span>@step.Order </span><span>@step.Description</span>
+                    <span>@ingredient.Amount @ingredient.MeasuringUnit</span><span>@ingredient.Name</span>
                 </div>
             }
-        </div>
-    }
-    <h3>@ViewBag.NoRecipe</h3>
-</body>
-</html>
+            }
+    </div>
+    <h3>Steps</h3>
+    <div>
+        @foreach(var step in ViewBag.Recipe.Steps)
+        {
+            <div>
+                    <span>@step.Order </span><span>@step.Description</span>
+            </div>
+        }
+    </div>
+}
+<h3>@ViewBag.NoRecipe</h3>
