@@ -9,6 +9,12 @@ namespace Cookbook.HighLevelTests
 {
     public class NewRecipeTest: HighLevelTest
     {
+        public NewRecipeTest()
+        {
+            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
+            DelayForDemoVideo();
+        }
+
         [Fact]
         public void DisplayNewRecipeForm()
         {
@@ -24,18 +30,12 @@ namespace Cookbook.HighLevelTests
         [Fact]
         public void FindBasicElementsInNewRecipeForm()
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             TestElementsInForm(1, 1);
         }
 
         [Fact]
         public void AddNewIngredient()
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             var addNewIngredientButton = _driver.FindElement(By.Id("addInputsForIngredient"));
             addNewIngredientButton.Click();
             DelayForDemoVideo();
@@ -46,9 +46,6 @@ namespace Cookbook.HighLevelTests
         [Fact]
         public void AddNewStep()
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             var addNewStepButton = _driver.FindElement(By.Id("addInputsForStep"));
             Assert.NotNull(addNewStepButton);
             addNewStepButton.Click();
@@ -63,9 +60,6 @@ namespace Cookbook.HighLevelTests
         [InlineData(2)]
         public void DeleteIngredient(int ingredientIndex)
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             var ingredients = SetIngredients(3);
             Assert.Equal(3, ingredients.Count);
 
@@ -111,9 +105,6 @@ namespace Cookbook.HighLevelTests
         [Fact]
         public void DeleteLastIngredient()
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             var ingredients = SetIngredients(1);
             Assert.Single(ingredients);
 
@@ -150,9 +141,6 @@ namespace Cookbook.HighLevelTests
         [InlineData(2)]
         public void DeleteStep(int stepIndex)
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             var steps = SetSteps(3);
             Assert.Equal(3, steps.Count);
 
@@ -189,9 +177,6 @@ namespace Cookbook.HighLevelTests
         [Fact]
         public void DeleteLastStep()
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             var steps = SetSteps(1);
             Assert.Single(steps);
 
@@ -217,9 +202,6 @@ namespace Cookbook.HighLevelTests
         [Fact]
         public void MoveUpStep()
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             var steps = SetSteps(3);
             Assert.Equal(3, steps.Count);
 
@@ -255,9 +237,6 @@ namespace Cookbook.HighLevelTests
         [Fact]
         public void FirstStepMoveUp()
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             var steps = SetSteps(1);
             Assert.Single(steps);
 
@@ -289,9 +268,6 @@ namespace Cookbook.HighLevelTests
         [Fact]
         public void MoveDownStep()
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             var steps = SetSteps(3);
             Assert.Equal(3, steps.Count);
 
@@ -327,9 +303,6 @@ namespace Cookbook.HighLevelTests
         [Fact]
         public void LastStepMoveDown()
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             var steps = SetSteps(2);
             Assert.Equal(2, steps.Count);
 
@@ -364,9 +337,6 @@ namespace Cookbook.HighLevelTests
         [Fact]
         public void CancelForm()
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             _driver.FindElement(By.XPath("//a[@href='/' and contains(text(), 'Cancel')]")).Click();
             DelayForDemoVideo();
 
@@ -376,9 +346,6 @@ namespace Cookbook.HighLevelTests
         [Fact]
         public void ResetForm()
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             _driver.FindElement(By.XPath("//input[@id=(//label[contains(text(), 'Recipe name')]/@for)]"))
                 .SendKeys("Čufte u paradajiz sosu");
 
@@ -420,9 +387,6 @@ namespace Cookbook.HighLevelTests
         [Fact]
         public void SaveNewRecipe()
         {
-            _driver.Navigate().GoToUrl("http://localhost:58883/Recipe/NewRecipe");
-            DelayForDemoVideo();
-
             _driver.FindElement(By.XPath("//input[@id=(//label[contains(text(), 'Recipe name')]/@for)]"))
                 .SendKeys("Čufte u paradajiz sosu");
             var ingredients = SetIngredients();
