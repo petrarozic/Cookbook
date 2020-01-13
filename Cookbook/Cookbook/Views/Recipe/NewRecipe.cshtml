@@ -1,39 +1,49 @@
 ﻿@model RecipeViewModel
 
-<h1>Create new recipe</h1>
-<form asp-action="AddRecipe" method="post">
-    <label for="Recipe_Name">Recipe name:</label>
-    <input asp-for="Recipe.Name" />
-    <label for="Ingredients">Ingredients</label>
-    <div id="Ingredients">
-        <div class="ingredient" id="0">
-            <label asp-for="Recipe.Ingredients[0].Name">Name:</label>
-            <input asp-for="Recipe.Ingredients[0].Name" />
-            <label asp-for="Recipe.Ingredients[0].Amount">Amount:</label>
-            <input asp-for="Recipe.Ingredients[0].Amount" />
-            <label asp-for="Recipe.Ingredients[0].MeasuringUnit">Measuring unit:</label>
-            <input asp-for="Recipe.Ingredients[0].MeasuringUnit" />
-            <button id="deleteIngredient" type="button">Delete ingredient</button>
+<div class="title">Create new recipe</div>
+<div class="flex-container-column">
+    <form asp-action="AddRecipe" method="post">
+        <div class="section">
+            <label for="Recipe_Name">Recipe name:</label>
+            <input asp-for="Recipe.Name" />
         </div>
-    </div>
-    <button id="addInputsForIngredient" type="button">New ingredient</button>
-    <label for="Steps">Steps</label>
-    <div id="Steps">
-        <div class="step" id="0">
-            <label>1.</label>
-            <label asp-for="Recipe.Steps[0].Description">Description:</label>
-            <input asp-for="Recipe.Steps[0].Description" />
-            <button id="moveUpStep" type="button">Move up</button>
-            <button id="moveDownStep" type="button">Move down</button>
-            <button id="deleteStep" type="button">Delete step</button>
+        <div class="section">
+            <label for="Ingredients" class="sectionName">Ingredients</label>
+            <div id="Ingredients">
+                <div class="ingredient flex-container-row" id="0">
+                    <label asp-for="Recipe.Ingredients[0].Name">Name:</label>
+                    <input asp-for="Recipe.Ingredients[0].Name" />
+                    <label asp-for="Recipe.Ingredients[0].Amount">Amount:</label>
+                    <input asp-for="Recipe.Ingredients[0].Amount" />
+                    <label asp-for="Recipe.Ingredients[0].MeasuringUnit">Measuring unit:</label>
+                    <input asp-for="Recipe.Ingredients[0].MeasuringUnit" />
+                    <img src="~/images/delete-icon.png" id="deleteIngredient" class="icon" alt="Delete!">
+                </div>
+            </div>
+            <button id="addInputsForIngredient" type="button">New ingredient</button>
         </div>
-    </div>
-    <button id="addInputsForStep" type="button">New step</button>
-    <a asp-controller="Home" asp-action="Index">Cancel</a>
-    <a asp-controller="Recipe" asp-action="NewRecipe">Reset</a>
-    <input type="submit" value="Add recipe" />
-</form>
+        <div class="section">
+            <label for="Steps" class="sectionName">Steps</label>
+            <div id="Steps">
+                <div class="step flex-container-row" id="0">
+                    <label>1.</label>
+                    <label asp-for="Recipe.Steps[0].Description">Description:</label>
+                    <input asp-for="Recipe.Steps[0].Description" />
 
+                    <img src="~/images/up-arrow.png" id="moveUpStep" class="icon" alt="Up!">
+                    <img src="~/images/down-arrow.png" id="moveDownStep" class="icon" alt="Down!">
+                    <img src="~/images/delete-icon.png" id="deleteStep" class="icon" alt="Delete!">
+                </div>
+            </div>
+            <button id="addInputsForStep" type="button">New step</button>
+        </div>
+        <div class="buttons">
+            <button><a asp-controller="Home" asp-action="Index">Cancel</a></button>
+            <button><a asp-controller="Recipe" asp-action="NewRecipe">Reset</a></button>
+            <input type="submit" value="Add recipe" />
+        </div>
+    </form>
+</div>
 @section Scripts {
     <script src="~/Scripts/NewRecipe.js"></script>
 }

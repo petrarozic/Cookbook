@@ -64,7 +64,7 @@ namespace Cookbook.HighLevelTests
             Assert.Equal(3, ingredients.Count);
 
             _driver.FindElement(
-                By.XPath("//div[@id = '"+ ingredientIndex.ToString() + "' and @class = 'ingredient']//button[@id = 'deleteIngredient']")
+                By.XPath("//div[@id = '"+ ingredientIndex.ToString() + "' and contains(@class, 'ingredient')]//img[@id = 'deleteIngredient']")
                 ).Click();
             DelayForDemoVideo();
 
@@ -109,7 +109,7 @@ namespace Cookbook.HighLevelTests
             Assert.Single(ingredients);
 
             _driver.FindElement(
-                By.XPath("//div[@id = '0' and @class = 'ingredient']//button[@id = 'deleteIngredient']")
+                By.XPath("//div[@id = '0' and contains(@class, 'ingredient')]//img[@id = 'deleteIngredient']")
                 ).Click();
 
             ingredients = _driver.FindElement(By.XPath("//div[@id=(//label[contains(text(), 'Ingredients')]/@for)]"))
@@ -145,7 +145,7 @@ namespace Cookbook.HighLevelTests
             Assert.Equal(3, steps.Count);
 
             _driver.FindElement(
-               By.XPath("//div[@id = '" + stepIndex.ToString() + "' and @class = 'step']//button[@id = 'deleteStep']")
+               By.XPath("//div[@id = '" + stepIndex.ToString() + "' and contains(@class, 'step')]//img[@id = 'deleteStep']")
                ).Click();
             DelayForDemoVideo();
 
@@ -181,7 +181,7 @@ namespace Cookbook.HighLevelTests
             Assert.Single(steps);
 
             _driver.FindElement(
-               By.XPath("//div[@id = '0' and @class = 'step']//button[@id = 'deleteStep']")
+               By.XPath("//div[@id = '0' and contains(@class, 'step')]//img[@id = 'deleteStep']")
                ).Click();
             DelayForDemoVideo();
 
@@ -206,7 +206,7 @@ namespace Cookbook.HighLevelTests
             Assert.Equal(3, steps.Count);
 
             _driver.FindElement(
-               By.XPath("//div[@id = '1' and @class = 'step']//button[@id = 'moveUpStep']")
+               By.XPath("//div[@id = '1' and contains(@class, 'step')]//img[@id = 'moveUpStep']")
                ).Click();
             DelayForDemoVideo();
 
@@ -241,7 +241,7 @@ namespace Cookbook.HighLevelTests
             Assert.Single(steps);
 
             _driver.FindElement(
-               By.XPath("//div[@id = '0' and @class = 'step']//button[@id = 'moveUpStep']")
+               By.XPath("//div[@id = '0' and contains(@class, 'step')]//img[@id = 'moveUpStep']")
                ).Click();
             DelayForDemoVideo();
 
@@ -272,7 +272,7 @@ namespace Cookbook.HighLevelTests
             Assert.Equal(3, steps.Count);
 
             _driver.FindElement(
-               By.XPath("//div[@id = '1' and @class = 'step']//button[@id = 'moveDownStep']")
+               By.XPath("//div[@id = '1' and contains(@class, 'step')]//img[@id = 'moveDownStep']")
                ).Click();
             DelayForDemoVideo();
 
@@ -307,7 +307,7 @@ namespace Cookbook.HighLevelTests
             Assert.Equal(2, steps.Count);
 
             _driver.FindElement(
-               By.XPath("//div[@id = '1' and @class = 'step']//button[@id = 'moveDownStep']")
+               By.XPath("//div[@id = '1' and contains(@class, 'step')]//img[@id = 'moveDownStep']")
                ).Click();
             DelayForDemoVideo();
 
@@ -399,7 +399,7 @@ namespace Cookbook.HighLevelTests
             _driver.FindElement(By.XPath("//input[@type='submit' and @value = 'Add recipe']")).Click();
             DelayForDemoVideo();
 
-            Assert.Matches(@"http:\/\/localhost:58883\/Recipe\/[1-9]+$", _driver.Url);
+            Assert.Matches(@"http:\/\/localhost:58883\/Recipe\/[1-9][0-9]*$", _driver.Url);
         }
 
         private void TestElementsInForm(int expectedNumOfIngredients, int expecteNumOfSteps)
@@ -482,7 +482,7 @@ namespace Cookbook.HighLevelTests
             Assert.Equal("text", ingMu.GetAttribute("type"));
             Assert.Equal("Recipe.Ingredients[" + ingredientNum + "].MeasuringUnit", ingMu.GetAttribute("name"));
 
-            var deleteButton = element.FindElement(By.XPath(".//button[@id='deleteIngredient' and @type='button']"));
+            var deleteButton = element.FindElement(By.XPath(".//img[@id='deleteIngredient']"));
             Assert.NotNull(deleteButton);
         }
 
@@ -513,13 +513,13 @@ namespace Cookbook.HighLevelTests
             Assert.Equal("text", stepDesc.GetAttribute("type"));
             Assert.Equal("Recipe.Steps[" + stepNum + "].Description", stepDesc.GetAttribute("name"));
 
-            var deleteButton = element.FindElement(By.XPath(".//button[@id='deleteStep' and @type='button']"));
+            var deleteButton = element.FindElement(By.XPath(".//img[@id='deleteStep']"));
             Assert.NotNull(deleteButton);
 
-            var moveUpButton = element.FindElement(By.XPath(".//button[@id='moveUpStep' and @type='button']"));
+            var moveUpButton = element.FindElement(By.XPath(".//img[@id='moveUpStep']"));
             Assert.NotNull(moveUpButton);
 
-            var moveDownButton = element.FindElement(By.XPath(".//button[@id='moveDownStep'  and @type='button']"));
+            var moveDownButton = element.FindElement(By.XPath(".//img[@id='moveDownStep']"));
             Assert.NotNull(moveDownButton);
         }
 

@@ -27,11 +27,11 @@ namespace Cookbook.HighLevelTests
             Assert.Matches(@"http:\/\/localhost:58883\/Recipe\/[1-9]+$", _driver.Url);
             Assert.Equal("Cookbook", _driver.Title);
 
-            string pageTitle = _driver.FindElement(By.TagName("h1")).Text;
+            string pageTitle = _driver.FindElement(By.XPath("//div[@class = 'title']")).Text;
             Assert.Contains(pageTitle, recipeName);
 
             Assert.Contains("Ingredients", _driver.PageSource);
-            Assert.Matches("1 kg.*Meso", _driver.PageSource);
+            Assert.Matches("1 kg.*\n.*Meso", _driver.PageSource);
             Assert.Contains("Steps", _driver.PageSource);
             Assert.Contains("Razvaljas tijesto", _driver.PageSource);
 

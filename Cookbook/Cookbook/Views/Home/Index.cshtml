@@ -1,15 +1,23 @@
-﻿Cookbook
-<div id="Recipes">
-    @{
-        foreach (var recipe in ViewBag.Recipes)
-        {
-            <div class="recipe" id=@recipe.RecipeId>
-                Name: @recipe.Name
-            </div>
-        }
-    }
+﻿<div class="title">Cookbook</div>
+
+<div class="buttons">
+    <button><a asp-controller="Recipe" asp-action="NewRecipe">Add new recipe</a></button>
 </div>
-<a asp-controller="Recipe" asp-action="NewRecipe" class="navbar-brand">Add new recipe</a>
+
+<div class="flex-container-column">
+    <div class="section">
+        <div id="Recipes">
+            @{
+                foreach (var recipe in ViewBag.Recipes)
+                {
+                    <div class="recipe" id=@recipe.RecipeId>
+                        Name: @recipe.Name
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
 
 @section Scripts {
     <script src="~/Scripts/HomeIndex.js"></script>

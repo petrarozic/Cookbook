@@ -14,7 +14,7 @@ function addInputsForIngredient() {
     ingredientNum++;
 
     var ingredientDiv = $("<div>");
-    ingredientDiv.attr({ class: 'ingredient' });
+    ingredientDiv.attr({ class: 'ingredient flex-container-row' });
     ingredientDiv.attr({ id: ingredientNum.toString() });
 
     var labelName = $("<label>").text("Name:");
@@ -39,10 +39,12 @@ function addInputsForIngredient() {
     inputMeasuringUnit.attr({ id: 'Recipe_Ingredients_' + ingredientNum + '__MeasuringUnit' });
     inputMeasuringUnit.attr({ name: 'Recipe.Ingredients[' + ingredientNum + '].MeasuringUnit' });
 
-    var deleteButton = $('<button>').text("Delete ingredient");
-    deleteButton.attr({ id: 'deleteIngredient' });
-    deleteButton.attr({ type: 'button' });
-    deleteButton.click(deleteIngredient);
+    var imgDelete = $("<img>");
+    imgDelete.attr({ src: "/images/delete-icon.png" });
+    imgDelete.attr({ id: 'deleteIngredient' });
+    imgDelete.attr({ alt: "Delete!" });
+    imgDelete.attr({ class: "icon" });
+    imgDelete.click(deleteIngredient);
 
     ingredientDiv.append(labelName);
     ingredientDiv.append(inputName);
@@ -50,7 +52,7 @@ function addInputsForIngredient() {
     ingredientDiv.append(inputAmount);
     ingredientDiv.append(labelMeasuringUnit);
     ingredientDiv.append(inputMeasuringUnit);
-    ingredientDiv.append(deleteButton);
+    ingredientDiv.append(imgDelete);
 
     $("#Ingredients").append(ingredientDiv);
 }
@@ -83,7 +85,7 @@ function addInputsForStep() {
     stepNum++;
 
     var stepDiv = $("<div>");
-    stepDiv.attr({ class: 'step' });
+    stepDiv.attr({ class: 'step flex-container-row' });
     stepDiv.attr({ id: stepNum.toString() });
 
     var labelOrder = $("<label>").text((stepNum + 1).toString() + ".");
@@ -96,27 +98,34 @@ function addInputsForStep() {
     inputDesc.attr({ id: 'Recipe_Steps_' + stepNum + '__Description' });
     inputDesc.attr({ name: 'Recipe.Steps[' + stepNum + '].Description' });
 
-    var moveUpButton = $('<button>').text("Move up");
-    moveUpButton.attr({ id: 'moveUpStep' });
-    moveUpButton.attr({ type: 'button' });
-    moveUpButton.click(moveUpStep);
+    var imgMoveUpButton = $('<img>');
+    imgMoveUpButton.attr({ id: 'moveUpStep' });
+    imgMoveUpButton.attr({ src: '/images/up-arrow.png' });
+    imgMoveUpButton.attr({ alt: 'Up!' });
+    imgMoveUpButton.attr({ class: 'icon' });
+    imgMoveUpButton.click(moveUpStep);
 
-    var moveDownButton = $('<button>').text("Move down");
-    moveDownButton.attr({ id: 'moveDownStep' });
-    moveDownButton.attr({ type: 'button' });
-    moveDownButton.click(moveDownStep);
+    var imgMoveDownButton = $('<img>');
+    imgMoveDownButton.attr({ id: 'moveDownStep' });
+    imgMoveDownButton.attr({ src: '/images/down-arrow.png' });
+    imgMoveDownButton.attr({ alt: 'Down!' });
+    imgMoveDownButton.attr({ class: 'icon' });
+    imgMoveDownButton.click(moveDownStep);
 
-    var deleteButton = $('<button>').text("Delete step");
-    deleteButton.attr({ id: 'deleteStep' });
-    deleteButton.attr({ type: 'button' });
-    deleteButton.click(deleteStep);
+    var imgDeleteButton = $('<img>');
+    imgDeleteButton.attr({ id: 'deleteStep' });
+    imgDeleteButton.attr({ src: '/images/delete-icon.png' });
+    imgDeleteButton.attr({ alt: 'Delete!' });
+    imgDeleteButton.attr({ class: 'icon' });
+    imgDeleteButton.attr({ type: 'button' });
+    imgDeleteButton.click(deleteStep);
 
     stepDiv.append(labelOrder);
     stepDiv.append(labelDesc);
     stepDiv.append(inputDesc);
-    stepDiv.append(moveUpButton);
-    stepDiv.append(moveDownButton);
-    stepDiv.append(deleteButton);
+    stepDiv.append(imgMoveUpButton);
+    stepDiv.append(imgMoveDownButton);
+    stepDiv.append(imgDeleteButton);
 
     $("#Steps").append(stepDiv);
 }
